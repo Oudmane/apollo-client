@@ -448,7 +448,8 @@ export class QueryManager<TStore> {
       let shouldNotifyIfLoading =
         (!newData && queryStoreValue.previousVariables != null) ||
         fetchPolicy === 'cache-only' ||
-        fetchPolicy === 'cache-and-network';
+        fetchPolicy === 'cache-and-network' ||
+        fetchPolicy === 'no-cache';
 
       // if this caused by a cache broadcast but the query is still in flight
       // don't notify the observer

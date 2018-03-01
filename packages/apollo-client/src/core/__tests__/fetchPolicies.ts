@@ -240,6 +240,18 @@ describe('no-cache', () => {
         expect(called).toBe(2);
       });
   });
+  it('should not be loading on query resolution', () => {
+    const client = new ApolloClient({
+      link: createLink(),
+      cache: new InMemoryCache({ addTypename: false }),
+    });
+
+    return client
+      .query({ fetchPolicy: 'no-cache', query })
+      .then(actualResult => {
+        expect(actualResult.loading).toEqual(false);
+      });
+  });
   it('requests from the network even if already in cache', () => {
     let called = 0;
     const inspector = new ApolloLink((operation, forward) => {

@@ -116,6 +116,14 @@ export class ObservableQuery<T> extends Observable<ApolloQueryResult<T>> {
       let subscription: Subscription;
       const observer: Observer<ApolloQueryResult<T>> = {
         next(result) {
+          // Do not resolve the Promise yet if we
+          // are still loading the data (request in flight)
+          // otherwise people will be confused when they
+          // call .then() and the result.loading is true
+          // still and no data is returned for certain
+          // fetch policies
+          if (result.loading) return;
+
           resolve(result);
 
           // Stop the query within the QueryManager if we can before
